@@ -41,35 +41,40 @@ class PushTests(unittest.TestCase):
         fake.get_doc.side_effect = None; fake.get_doc.return_value = self.doc
 
     def test_new_push_inserts_once_and_does_not_commit_early(self):
-        ack = api.push(self.op)
+        ack = api.push(self.op, expected_user=fake.session.user)
         self.assertFalse(ack['duplicate']); self.doc.insert.assert_called_once()
         fake.db.commit.assert_not_called()
         self.assertEqual(ack['name'], operation_name(fake.session.user,self.op['id']))
 
     def test_replay_after_lost_response_returns_existing_ack(self):
         fake.db.exists.return_value = True
-        ack = api.push(self.op)
+        ack = api.push(self.op, expected_user=fake.session.user)
         self.assertTrue(ack['duplicate']); self.doc.insert.assert_not_called()
         self.doc.check_permission.assert_called_with('read')
 
     def test_reused_uuid_with_modified_data_is_rejected(self):
         fake.db.exists.return_value = True; self.op['payload']['notes'] = 'Different'
-        with self.assertRaisesRegex(ValueError,'different data'): api.push(self.op)
+        with self.assertRaisesRegex(ValueError,'different data'): api.push(self.op, expected_user=fake.session.user)
         self.doc.insert.assert_not_called()
 
     def test_concurrent_duplicate_rolls_back_savepoint_then_acknowledges(self):
         self.doc.insert.side_effect = fake.DuplicateEntryError()
-        ack = api.push(self.op)
+        ack = api.push(self.op, expected_user=fake.session.user)
         fake.db.rollback.assert_called_once_with(save_point='field_push')
         self.assertTrue(ack['duplicate'])
 
     def test_ack_cannot_belong_to_other_account(self):
         fake.db.exists.return_value = True; self.doc.submitted_by = 'someone@example.com'
-        with self.assertRaises(ValueError): api.push(self.op)
+        with self.assertRaises(ValueError): api.push(self.op, expected_user=fake.session.user)
+
+    def test_account_change_between_context_and_upload_is_rejected(self):
+        with self.assertRaises(PermissionError):
+            api.push(self.op, expected_user="previous@example.com")
+        self.doc.insert.assert_not_called()
 
     def test_create_permission_is_required_before_insert(self):
         fake.has_permission.reset_mock()
-        api.push(self.op)
+        api.push(self.op, expected_user=fake.session.user)
         fake.has_permission.assert_called_once_with('Field Visit','create',throw=True)
 
 if __name__ == '__main__': unittest.main()

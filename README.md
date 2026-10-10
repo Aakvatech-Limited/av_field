@@ -2,7 +2,7 @@
 
 AV Field is an installable offline PWA for ERPNext field teams. Agents record customer visits and order requests on their device, then sync when a connection returns. Managers review requests in Frappe and create draft Sales Orders using ERPNext's current pricing and validation.
 
-**Initial MVP — version 16.0.0, branch `version-16-hotfix`.** Requires Frappe and ERPNext 16. This is an independent app; it does not depend on `av_track`.
+**Initial MVP — version 16.0.1, branch `version-16-hotfix`.** Requires Frappe and ERPNext 16. This is an independent app; it does not depend on `av_track`.
 
 ## What is included
 

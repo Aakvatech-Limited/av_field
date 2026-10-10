@@ -16,11 +16,15 @@ const server = createServer(async (req, res) => {
       const method = url.pathname.split('.').at(-1);
       let message;
       if (method === 'context') message = {user, csrf_token:'fixture-token', version:1};
-      else if (method === 'references') message = {rows:url.searchParams.get('kind') === 'customers' ? [{name:'CUST-1',customer_name:'Test Shop'}] : [{name:'ITEM-1',item_name:'Test Item',stock_uom:'Nos'}],after:null};
+      else if (method === 'references') {
+        assert.equal(url.searchParams.get('expected_user'), user);
+        message = {rows:url.searchParams.get('kind') === 'customers' ? [{name:'CUST-1',customer_name:'Test Shop'}] : [{name:'ITEM-1',item_name:'Test Item',stock_uom:'Nos'}],after:null};
+      }
       else if (method === 'push') {
         assert.equal(req.headers['x-frappe-csrf-token'], 'fixture-token');
         let body = ''; for await (const chunk of req) body += chunk;
-        const op = JSON.parse(body).operation;
+        const parsed = JSON.parse(body); assert.equal(parsed.expected_user, user);
+        const op = parsed.operation;
         message = {id:op.id,name:`FIELD-${op.id}`,doctype:op.kind === 'visit' ? 'Field Visit' : 'Field Order Request',duplicate:acknowledgements.has(`${user}:${op.id}`)};
         acknowledgements.set(`${user}:${op.id}`, op);
       } else { res.writeHead(404); res.end('{}'); return; }
@@ -63,9 +67,12 @@ try {
   await page.waitForFunction(() => document.querySelector('#workspace').hidden === false);
   assert.equal(await page.locator('#pending-count').textContent(), '2');
   // Shell cache must contain no private/API responses.
-  const cached = await page.evaluate(async () => {const cache=await caches.open('av-field-shell-16.0.0');return (await cache.keys()).map(req=>req.url)});
+  const cached = await page.evaluate(async () => {const cache=await caches.open('av-field-shell-16.0.1');return (await cache.keys()).map(req=>req.url)});
   assert.ok(cached.every(url => url.includes('/assets/av_field/pwa/')));
   await context.setOffline(false);
+  // CDP offline emulation does not emit connectivity events in every Chromium version.
+  // Exercise the actual reconnection handler explicitly, independently of transport emulation.
+  await page.evaluate(() => window.dispatchEvent(new Event("online")));
   await page.waitForFunction(() => document.querySelector('#pending-count').textContent === '0');
   assert.equal(acknowledgements.size,2);
   // Opening a different signed-in account cannot upload or show the previous account's data.

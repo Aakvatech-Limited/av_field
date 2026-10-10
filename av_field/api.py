@@ -18,8 +18,10 @@ def context():
 
 
 @frappe.whitelist(methods=["GET"])
-def references(kind, after=""):
+def references(kind, after="", expected_user=None):
     require_agent()
+    if expected_user != frappe.session.user:
+        frappe.throw("The signed-in account changed. Reload AV Field.", frappe.PermissionError)
     specs = {"customers": ("Customer", ["name", "customer_name"], {"disabled": 0}),
              "items": ("Item", ["name", "item_name", "stock_uom"],
                        {"disabled": 0, "is_sales_item": 1, "has_variants": 0})}
@@ -38,8 +40,10 @@ def references(kind, after=""):
 
 
 @frappe.whitelist(methods=["POST"])
-def push(operation):
+def push(operation, expected_user=None):
     require_agent()
+    if expected_user != frappe.session.user:
+        frappe.throw("The signed-in account changed. Reload AV Field.", frappe.PermissionError)
     operation = frappe.parse_json(operation)
     try:
         operation = normalize(operation)

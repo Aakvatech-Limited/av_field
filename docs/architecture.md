@@ -21,11 +21,11 @@ All methods require an authenticated Field Agent, Field Manager, or System Manag
 | Method | HTTP | Contract |
 | --- | --- | --- |
 | `av_field.api.context` | GET | Current user, CSRF token, contract version; never persist token on the device |
-| `av_field.api.references` | GET | `kind=customers/items`, optional `after`; at most 200 rows and next cursor |
-| `av_field.api.push` | POST | One operation; acknowledgement with id, DocType, name, duplicate flag |
+| `av_field.api.references` | GET | `kind=customers/items`, optional `after`, required `expected_user`; at most 200 rows and next cursor |
+| `av_field.api.push` | POST | One operation plus required `expected_user`; acknowledgement with id, DocType, name, duplicate flag |
 | `av_field.api.make_sales_order` | POST | Manager-only request name, company, delivery date; returns draft SO name |
 
-Authentication uses the same-origin Frappe session cookie. POST requests require Frappe's CSRF token. No CORS relaxation and no secrets embedded in the app.
+Authentication uses the same-origin Frappe session cookie. POST requests require Frappe's CSRF token. No CORS relaxation and no secrets embedded in the app. Every master page and upload also binds `expected_user` to the current authenticated user, so switching accounts midway through a sync cannot move records or masters between account databases.
 
 Reference reads use `frappe.get_list`, so role and User Permissions apply. The app downloads every page into a temporary in-memory snapshot, then replaces the previous snapshot in one IndexedDB transaction. Partial downloads do not truncate the working offline catalogue. A full snapshot removes inaccessible/deleted masters on the next successful sync. It is not a transactionally consistent snapshot across all database pages; an active master rename/edit can be reflected on the next refresh.
 

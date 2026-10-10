@@ -1,5 +1,5 @@
 /* Cache only this version's public shell. Never cache API responses or login pages. */
-const CACHE = 'av-field-shell-16.0.0';
+const CACHE = 'av-field-shell-16.0.1';
 const ROOT = new URL('./', self.location.href);
 const SHELL = ['index.html', 'style.css', 'app.js', 'db.js', 'sync.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 self.addEventListener('install', event => {

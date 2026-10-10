@@ -77,8 +77,8 @@ async function sync() {
   try {
     const work = async () => {
       await verifySession();
-      await drain(store, operation => api('push', {operation}, true));
-      const fresh = await downloadReferences((kind, after) => api('references', {kind, after}));
+      await drain(store, operation => api('push', {operation, expected_user: user}, true));
+      const fresh = await downloadReferences((kind, after) => api('references', {kind, after, expected_user: user}));
       await store.replaceReferences(fresh); snapshot = fresh; renderMasters();
       const records = await store.list();
       const rejected = records.filter(op => op.status === 'rejected').length;
