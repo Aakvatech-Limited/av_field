@@ -1,0 +1,109 @@
+{
+  "doctype": "DocType",
+  "name": "Field Visit",
+  "module": "AV Field",
+  "engine": "InnoDB",
+  "autoname": "",
+  "track_changes": 1,
+  "sort_field": "creation",
+  "sort_order": "DESC",
+  "field_order": [
+    "operation_id",
+    "recorded_at",
+    "customer",
+    "submitted_by",
+    "notes",
+    "payload_hash",
+    "has_location",
+    "latitude",
+    "longitude",
+    "accuracy"
+  ],
+  "fields": [
+    {
+      "fieldname": "operation_id",
+      "label": "Operation ID",
+      "fieldtype": "Data",
+      "reqd": 1,
+      "read_only": 1
+    },
+    {
+      "fieldname": "recorded_at",
+      "label": "Device Recorded At (UTC)",
+      "fieldtype": "Data",
+      "reqd": 1,
+      "read_only": 1
+    },
+    {
+      "fieldname": "customer",
+      "label": "Customer",
+      "fieldtype": "Link",
+      "options": "Customer",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "submitted_by",
+      "label": "Captured By",
+      "fieldtype": "Link",
+      "options": "User",
+      "read_only": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "notes",
+      "label": "Notes",
+      "fieldtype": "Small Text"
+    },
+    {
+      "fieldname": "payload_hash",
+      "label": "Payload Hash",
+      "fieldtype": "Data",
+      "hidden": 1,
+      "read_only": 1
+    },
+    {
+      "fieldname": "has_location",
+      "label": "Location Captured",
+      "fieldtype": "Check"
+    },
+    {
+      "fieldname": "latitude",
+      "label": "Latitude",
+      "fieldtype": "Float",
+      "precision": "8"
+    },
+    {
+      "fieldname": "longitude",
+      "label": "Longitude",
+      "fieldtype": "Float",
+      "precision": "8"
+    },
+    {
+      "fieldname": "accuracy",
+      "label": "GPS Accuracy (m)",
+      "fieldtype": "Float",
+      "precision": "2"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "Field Agent",
+      "read": 1,
+      "create": 1,
+      "if_owner": 1
+    },
+    {
+      "role": "Field Manager",
+      "read": 1,
+      "create": 1,
+      "write": 1
+    },
+    {
+      "role": "System Manager",
+      "read": 1,
+      "create": 1,
+      "write": 1
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "doctype": "DocType",
+  "name": "Field Order Item",
+  "module": "AV Field",
+  "istable": 1,
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "fields": [
+    {
+      "fieldname": "item_code",
+      "label": "Item",
+      "fieldtype": "Link",
+      "options": "Item",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "qty",
+      "label": "Quantity (Stock UOM)",
+      "fieldtype": "Float",
+      "reqd": 1,
+      "in_list_view": 1,
+      "precision": "6"
+    }
+  ],
+  "field_order": [
+    "item_code",
+    "qty"
+  ],
+  "permissions": []
+}

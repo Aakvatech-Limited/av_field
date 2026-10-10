@@ -1,0 +1,33 @@
+name: CI
+on:
+  push:
+    branches: [version-16-hotfix]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: python -m unittest discover -s tests -v
+      - run: python -m compileall -q av_field
+      - run: python -m pip install build
+      - run: python -m build
+      - run: npm ci
+      - run: npm test
+      - run: npx playwright install --with-deps chromium --only-shell
+      - run: npm run test:browser
+      - name: Disallow raw SQL
+        run: |
+          if rg -n 'frappe\.db\.(sql|sql_list|multisql)\s*\(' av_field; then
+            echo 'Use frappe.qb or document APIs instead of raw SQL.'
+            exit 1
+          fi
