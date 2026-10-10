@@ -102,5 +102,5 @@ Aakvatech-owned AV Field material is provided under the [GNU Affero General Publ
 
 The official PWA includes an **About & Legal Notices** page (available offline after the service worker installs) with the full AGPLv3 text bundled locally. Modified versions must follow the license's corresponding-source obligations, notice requirements, and applicable additional terms.
 
-Independent forks may use their own branding. AGPLv3 does **not** prohibit commercial use or rebranding. Aakvatech trademarks cannot be used to falsely imply endorsement. This licensing change does not revoke permissions already granted for earlier MIT-licensed copies. Third-party dependencies retain their own licenses.
+Independent forks may use their own branding. AGPLv3 does **not** prohibit commercial use or rebranding. Aakvatech trademarks cannot be used to falsely imply endorsement. This licensing change does not revoke licenses already granted for previously distributed copies. Third-party dependencies retain their own licenses.
 
