@@ -94,6 +94,13 @@ Contract tests cover input validation, account-specific operation IDs, stable pa
 
 Before production use, complete the [v16 site acceptance checklist](docs/acceptance.md), especially agent permissions, actual ERPNext prices/taxes, concurrent conversion, and offline reload on the target phones.
 
-## License
+## License and legal attribution
 
-MIT. Copyright Aakvatech Limited.
+Copyright (c) 2026 Aakvatech Limited. **AV Field — originally developed by Aakvatech Limited.**
+
+Aakvatech-owned AV Field material is provided under the [GNU Affero General Public License, version 3](LICENSE) (`AGPL-3.0-only`), with applicable [Section 7 additional terms](ADDITIONAL_TERMS.md). See the [NOTICE](NOTICE), [trademark policy](TRADEMARKS.md), and [branding / attribution guide](BRANDING.md).
+
+The official PWA includes an **About & Legal Notices** page (available offline after the service worker installs) with the full AGPLv3 text bundled locally. Modified versions must follow the license's corresponding-source obligations, notice requirements, and applicable additional terms.
+
+Independent forks may use their own branding. AGPLv3 does **not** prohibit commercial use or rebranding. Aakvatech trademarks cannot be used to falsely imply endorsement. This licensing change does not revoke permissions already granted for earlier MIT-licensed copies. Third-party dependencies retain their own licenses.
+
