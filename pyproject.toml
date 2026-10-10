@@ -8,6 +8,8 @@ authors = [{name = "Aakvatech Limited", email = "info@aakvatech.com"}]
 description = "Offline field visits and order capture for ERPNext"
 requires-python = ">=3.10"
 readme = "README.md"
+license = "AGPL-3.0-only"
+license-files = ["LICENSE", "NOTICE", "ADDITIONAL_TERMS.md", "TRADEMARKS.md", "BRANDING.md"]
 dynamic = ["version"]
 
 [tool.bench.frappe-dependencies]

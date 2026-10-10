@@ -1,7 +1,7 @@
 /* Cache only this version's public shell. Never cache API responses or login pages. */
-const CACHE = 'av-field-shell-16.0.1';
+const CACHE = 'av-field-shell-16.0.1-legal1';
 const ROOT = new URL('./', self.location.href);
-const SHELL = ['index.html', 'style.css', 'app.js', 'db.js', 'sync.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
+const SHELL = ['index.html', 'style.css', 'app.js', 'db.js', 'sync.js', 'manifest.webmanifest', 'legal.html', 'agpl-3.0.txt', 'icon-192.png', 'icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL.map(path => new Request(new URL(path, ROOT).href, {cache: 'reload'})))));
   // Keep an existing app version running until its tabs close. Never interrupt saves.
