@@ -1,4 +1,6 @@
 """Route planning and visit outcomes, separate from immutable field capture."""
+import hashlib
+import json
 from datetime import datetime
 from uuid import UUID
 
@@ -209,9 +211,10 @@ def record_outcome(operation, expected_user):
             frappe.throw("GPS values are outside valid ranges")
     elif accuracy is not None:
         frappe.throw("Accuracy requires coordinates")
-    existing = frappe.db.get_value("Field Route Visit Log", {"operation_id": uid}, ["name", "salesperson"], as_dict=True)
+    digest = hashlib.sha256(json.dumps(op, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    existing = frappe.db.get_value("Field Route Visit Log", {"operation_id": uid}, ["name", "salesperson", "payload_hash"], as_dict=True)
     if existing:
-        if existing.salesperson != frappe.session.user:
+        if existing.salesperson != frappe.session.user or existing.payload_hash != digest:
             frappe.throw("Outcome ID belongs to another user", frappe.PermissionError)
         return {"id": uid, "name": existing.name, "doctype": "Field Route Visit Log", "duplicate": True}
     plan = frappe.get_doc("Field Route Plan", payload.get("plan"))
@@ -230,7 +233,7 @@ def record_outcome(operation, expected_user):
         "reason": reason, "action_taken": action, "next_action": next_action,
         "next_action_date": next_date, "postponed_to": postponed,
         "recorded_at": when, "latitude": lat, "longitude": lon,
-        "accuracy": accuracy, "operation_id": uid,
+        "accuracy": accuracy, "operation_id": uid, "payload_hash": digest,
     })
     # Agent cannot mutate manager-owned route documents directly; route API enforces ownership.
     log.insert(ignore_permissions=True)
