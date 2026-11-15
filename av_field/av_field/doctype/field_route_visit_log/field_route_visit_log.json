@@ -1,0 +1,144 @@
+{
+  "doctype": "DocType",
+  "name": "Field Route Visit Log",
+  "module": "AV Field",
+  "engine": "InnoDB",
+  "autoname": "hash",
+  "istable": 0,
+  "track_changes": 1,
+  "field_order": [
+    "route_plan",
+    "stop_id",
+    "outlet",
+    "salesperson",
+    "outcome",
+    "reason",
+    "action_taken",
+    "next_action",
+    "next_action_date",
+    "postponed_to",
+    "recorded_at",
+    "latitude",
+    "longitude",
+    "accuracy",
+    "operation_id",
+    "field_visit"
+  ],
+  "fields": [
+    {
+      "fieldname": "route_plan",
+      "label": "Route Plan",
+      "fieldtype": "Link",
+      "options": "Field Route Plan",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "stop_id",
+      "label": "Stop Row ID",
+      "fieldtype": "Data",
+      "reqd": 1
+    },
+    {
+      "fieldname": "outlet",
+      "label": "Outlet",
+      "fieldtype": "Link",
+      "options": "Field Customer Outlet",
+      "reqd": 1
+    },
+    {
+      "fieldname": "salesperson",
+      "label": "Salesperson",
+      "fieldtype": "Link",
+      "options": "User",
+      "reqd": 1
+    },
+    {
+      "fieldname": "outcome",
+      "label": "Outcome",
+      "fieldtype": "Select",
+      "options": "Done\nSkipped\nNot Done\nPostponed",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "reason",
+      "label": "Reason",
+      "fieldtype": "Small Text"
+    },
+    {
+      "fieldname": "action_taken",
+      "label": "Action Taken",
+      "fieldtype": "Small Text"
+    },
+    {
+      "fieldname": "next_action",
+      "label": "Next Action",
+      "fieldtype": "Small Text"
+    },
+    {
+      "fieldname": "next_action_date",
+      "label": "Next Action Date",
+      "fieldtype": "Date"
+    },
+    {
+      "fieldname": "postponed_to",
+      "label": "Postponed To",
+      "fieldtype": "Date"
+    },
+    {
+      "fieldname": "recorded_at",
+      "label": "Recorded At",
+      "fieldtype": "Datetime",
+      "reqd": 1
+    },
+    {
+      "fieldname": "latitude",
+      "label": "Latitude",
+      "fieldtype": "Float",
+      "precision": "8"
+    },
+    {
+      "fieldname": "longitude",
+      "label": "Longitude",
+      "fieldtype": "Float",
+      "precision": "8"
+    },
+    {
+      "fieldname": "accuracy",
+      "label": "GPS Accuracy (m)",
+      "fieldtype": "Float"
+    },
+    {
+      "fieldname": "operation_id",
+      "label": "Idempotency Key",
+      "fieldtype": "Data",
+      "unique": 1,
+      "reqd": 1
+    },
+    {
+      "fieldname": "field_visit",
+      "label": "Field Visit",
+      "fieldtype": "Link",
+      "options": "Field Visit"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "Field Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ],
+  "sort_field": "creation",
+  "sort_order": "DESC"
+}
