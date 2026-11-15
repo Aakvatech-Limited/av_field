@@ -14,6 +14,6 @@ class FieldRoutePlan(Document):
                 frappe.throw("An outlet cannot appear twice in the same daily plan")
             seen.add(row.outlet)
             outlet = frappe.get_doc("Field Customer Outlet", row.outlet)
-            if not outlet.active or outlet.salesperson != self.salesperson:
+            if self.is_new() and (not outlet.active or outlet.salesperson != self.salesperson):
                 frappe.throw("Every outlet must be active and assigned to the route salesperson")
             row.customer = outlet.customer
