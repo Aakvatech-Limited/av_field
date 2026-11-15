@@ -36,6 +36,26 @@ export function routeUI({getStore, notify, sync}) {
       section.append(make('h3', 'Route · ' + plan.route_date));
       if (plan.zone) section.append(make('p', 'Zone: ' + plan.zone, 'hint'));
       const stops = plan.stops.slice().sort((a,b) => a.sequence - b.sequence);
+      const locations = stops.map(stop => localOutlet.get(stop.outlet))
+        .filter(outlet => outlet && Number.isFinite(Number(outlet.latitude)) &&
+          Number.isFinite(Number(outlet.longitude)) && outlet.latitude != null && outlet.longitude != null);
+      if (locations.length >= 2) {
+        // Google Maps URL waypoints have device-dependent limits; use consecutive
+        // ordered groups, never silently drop a scheduled stop.
+        for (let i = 0; i < locations.length - 1; i += 8) {
+          const segment = locations.slice(i, Math.min(i + 9, locations.length));
+          if (segment.length < 2) continue;
+          const point = p => p.latitude + ',' + p.longitude;
+          const params = new URLSearchParams({api: '1', origin: point(segment[0]),
+            destination: point(segment[segment.length - 1]), travelmode: 'driving'});
+          if (segment.length > 2) params.set('waypoints', segment.slice(1, -1).map(point).join('|'));
+          const link = make('a', 'Open ordered directions ' + (Math.floor(i/8) + 1), 'secondary');
+          link.href = 'https://www.google.com/maps/dir/?' + params;
+          link.target = '_blank'; link.rel = 'noopener noreferrer';
+          section.append(link);
+        }
+      }
+
       for (const stop of stops) {
         const outlet = localOutlet.get(stop.outlet) || {};
         const stagedEvent = staged.get(stop.name);
