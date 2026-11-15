@@ -1,0 +1,88 @@
+{
+  "doctype": "DocType",
+  "name": "Field Route Plan",
+  "module": "AV Field",
+  "engine": "InnoDB",
+  "autoname": "hash",
+  "istable": 0,
+  "track_changes": 1,
+  "field_order": [
+    "route_date",
+    "salesperson",
+    "zone",
+    "call_cycle",
+    "status",
+    "manager_notes",
+    "stops"
+  ],
+  "fields": [
+    {
+      "fieldname": "route_date",
+      "label": "Route Date",
+      "fieldtype": "Date",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "salesperson",
+      "label": "Assigned User",
+      "fieldtype": "Link",
+      "options": "User",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "zone",
+      "label": "Route Zone",
+      "fieldtype": "Link",
+      "options": "Field Route Zone"
+    },
+    {
+      "fieldname": "call_cycle",
+      "label": "Source Call Cycle",
+      "fieldtype": "Link",
+      "options": "Field Call Cycle"
+    },
+    {
+      "fieldname": "status",
+      "label": "Plan Status",
+      "fieldtype": "Select",
+      "options": "Draft\nPublished\nClosed",
+      "default": "Draft",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "manager_notes",
+      "label": "Manager Notes",
+      "fieldtype": "Small Text"
+    },
+    {
+      "fieldname": "stops",
+      "label": "Route Stops",
+      "fieldtype": "Table",
+      "options": "Field Route Stop",
+      "reqd": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "Field Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Field Agent",
+      "read": 1
+    }
+  ]
+}
