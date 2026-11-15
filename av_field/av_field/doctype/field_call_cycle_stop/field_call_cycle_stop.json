@@ -1,0 +1,53 @@
+{
+  "doctype": "DocType",
+  "name": "Field Call Cycle Stop",
+  "module": "AV Field",
+  "engine": "InnoDB",
+  "autoname": "",
+  "istable": 1,
+  "track_changes": 0,
+  "field_order": [
+    "outlet",
+    "sequence",
+    "day_of_week",
+    "planned_time",
+    "purpose"
+  ],
+  "fields": [
+    {
+      "fieldname": "outlet",
+      "label": "Outlet",
+      "fieldtype": "Link",
+      "options": "Field Customer Outlet",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "sequence",
+      "label": "Sequence",
+      "fieldtype": "Int",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "day_of_week",
+      "label": "Day of Week",
+      "fieldtype": "Select",
+      "options": "Monday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday",
+      "reqd": 1
+    },
+    {
+      "fieldname": "planned_time",
+      "label": "Planned Time",
+      "fieldtype": "Time"
+    },
+    {
+      "fieldname": "purpose",
+      "label": "Visit Purpose",
+      "fieldtype": "Select",
+      "options": "Sales\nCollection\nMerchandising\nRelationship\nService\nOther",
+      "default": "Sales"
+    }
+  ],
+  "permissions": []
+}
