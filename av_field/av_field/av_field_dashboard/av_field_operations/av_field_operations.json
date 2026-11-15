@@ -1,0 +1,32 @@
+{
+  "creation": "2026-11-16 00:00:00.000000",
+  "modified": "2026-11-16 00:00:00.000000",
+  "owner": "Administrator",
+  "modified_by": "Administrator",
+  "docstatus": 0,
+  "idx": 0,
+  "doctype": "Dashboard",
+  "name": "AV Field Operations",
+  "dashboard_name": "AV Field Operations",
+  "module": "AV Field",
+  "is_standard": 1,
+  "is_default": 0,
+  "cards": [
+    {
+      "card": "Field Visits Total"
+    },
+    {
+      "card": "Field Order Requests Total"
+    }
+  ],
+  "charts": [
+    {
+      "chart": "Field Visits Trend",
+      "width": "Full"
+    },
+    {
+      "chart": "Field Order Requests Trend",
+      "width": "Full"
+    }
+  ]
+}
