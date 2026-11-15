@@ -22,7 +22,8 @@
     "longitude",
     "accuracy",
     "operation_id",
-    "field_visit"
+    "field_visit",
+    "payload_hash"
   ],
   "fields": [
     {
@@ -121,6 +122,13 @@
       "label": "Field Visit",
       "fieldtype": "Link",
       "options": "Field Visit"
+    },
+    {
+      "fieldname": "payload_hash",
+      "label": "Payload Fingerprint",
+      "fieldtype": "Data",
+      "hidden": 1,
+      "read_only": 1
     }
   ],
   "permissions": [
