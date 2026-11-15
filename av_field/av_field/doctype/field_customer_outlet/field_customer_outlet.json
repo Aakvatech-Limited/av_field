@@ -1,0 +1,139 @@
+{
+  "doctype": "DocType",
+  "name": "Field Customer Outlet",
+  "module": "AV Field",
+  "engine": "InnoDB",
+  "autoname": "hash",
+  "istable": 0,
+  "track_changes": 1,
+  "field_order": [
+    "customer",
+    "outlet_name",
+    "zone",
+    "address",
+    "latitude",
+    "longitude",
+    "preferred_day",
+    "preferred_start",
+    "preferred_end",
+    "visit_frequency_days",
+    "service_minutes",
+    "priority",
+    "salesperson",
+    "active",
+    "visit_instructions"
+  ],
+  "fields": [
+    {
+      "fieldname": "customer",
+      "label": "Customer",
+      "fieldtype": "Link",
+      "options": "Customer",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "outlet_name",
+      "label": "Outlet / Site Name",
+      "fieldtype": "Data",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "zone",
+      "label": "Route Zone",
+      "fieldtype": "Link",
+      "options": "Field Route Zone"
+    },
+    {
+      "fieldname": "address",
+      "label": "Address",
+      "fieldtype": "Link",
+      "options": "Address"
+    },
+    {
+      "fieldname": "latitude",
+      "label": "Latitude",
+      "fieldtype": "Float",
+      "precision": "8"
+    },
+    {
+      "fieldname": "longitude",
+      "label": "Longitude",
+      "fieldtype": "Float",
+      "precision": "8"
+    },
+    {
+      "fieldname": "preferred_day",
+      "label": "Preferred Day",
+      "fieldtype": "Select",
+      "options": "\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday"
+    },
+    {
+      "fieldname": "preferred_start",
+      "label": "Preferred Start Time",
+      "fieldtype": "Time"
+    },
+    {
+      "fieldname": "preferred_end",
+      "label": "Preferred End Time",
+      "fieldtype": "Time"
+    },
+    {
+      "fieldname": "visit_frequency_days",
+      "label": "Visit Frequency (Days)",
+      "fieldtype": "Int",
+      "default": "7"
+    },
+    {
+      "fieldname": "service_minutes",
+      "label": "Expected Visit Minutes",
+      "fieldtype": "Int",
+      "default": "20"
+    },
+    {
+      "fieldname": "priority",
+      "label": "Priority",
+      "fieldtype": "Select",
+      "options": "Normal\nHigh\nCritical",
+      "default": "Normal"
+    },
+    {
+      "fieldname": "salesperson",
+      "label": "Assigned User",
+      "fieldtype": "Link",
+      "options": "User"
+    },
+    {
+      "fieldname": "active",
+      "label": "Active",
+      "fieldtype": "Check",
+      "default": "1"
+    },
+    {
+      "fieldname": "visit_instructions",
+      "label": "Visit Instructions",
+      "fieldtype": "Small Text"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "Field Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Field Agent",
+      "read": 1
+    }
+  ]
+}
