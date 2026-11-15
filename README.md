@@ -57,7 +57,7 @@ Restart the bench's application processes using your hosting platform's usual pr
 
 The service worker is deliberately scoped to `/assets/av_field/pwa/`; it does not take control of ERPNext Desk. For offline reopening, use the installed PWA or bookmark its actual `index.html` URL. The `/field` redirect itself requires the server to be reachable.
 
-## Daily workflow
+## Sales route planning (new)\n\nCreate route zones, assigned customer outlets, recurring call cycles, and published daily plans. Agents see an ordered route on the offline PWA, open driving directions, and record Done / Skipped / Not Done / Pending / Postponed outcomes with reasons and follow-up actions. Visit-outcome logs are append-only. See [route-planning setup and QA](docs/sales-route-planning.md).\n\n## Daily workflow
 
 **Agent:** choose a customer → save a visit or an order request → see it as pending in Activity → reconnect with the app open → sync → open the acknowledged record in ERPNext if needed.
 
@@ -78,7 +78,7 @@ Captured records are append-only. Correct captured facts with a new request; do 
 
 ## Scope remaining
 
-Planned modules: routes and daily beat plans, check-in/out duration, merchandising surveys/photos, collection receipts and payment reconciliation, van stock/deliveries, cached customer-specific indicative prices, manager dashboards, and an optional native wrapper if background location becomes mandatory. These require their own permissions, offline conflict rules, and acceptance tests.
+Planned modules: automatic road-network route optimization, check-in/out duration, merchandising surveys/photos, collection receipts and payment reconciliation, van stock/deliveries, cached customer-specific indicative prices, manager dashboards, and an optional native wrapper if background location becomes mandatory. These require their own permissions, offline conflict rules, and acceptance tests.
 
 ## Development and validation
 
