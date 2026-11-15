@@ -97,7 +97,7 @@ def my_routes(expected_user, after=""):
     filters = {"salesperson": frappe.session.user, "status": "Published"}
     if after:
         filters["name"] = [">", after]
-    plans = frappe.get_list(
+    plans = frappe.get_all(
         "Field Route Plan", filters=filters,
         fields=["name", "route_date", "salesperson", "status", "zone"],
         order_by="name asc", limit_page_length=101,
