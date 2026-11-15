@@ -1,0 +1,125 @@
+{
+  "doctype": "DocType",
+  "name": "Field Route Stop",
+  "module": "AV Field",
+  "engine": "InnoDB",
+  "autoname": "",
+  "istable": 1,
+  "track_changes": 0,
+  "field_order": [
+    "outlet",
+    "customer",
+    "sequence",
+    "planned_time",
+    "purpose",
+    "status",
+    "status_reason",
+    "action_taken",
+    "next_action",
+    "next_action_date",
+    "postponed_to",
+    "visited_at",
+    "latitude",
+    "longitude",
+    "accuracy",
+    "field_visit"
+  ],
+  "fields": [
+    {
+      "fieldname": "outlet",
+      "label": "Outlet",
+      "fieldtype": "Link",
+      "options": "Field Customer Outlet",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "customer",
+      "label": "Customer",
+      "fieldtype": "Link",
+      "options": "Customer",
+      "read_only": 1
+    },
+    {
+      "fieldname": "sequence",
+      "label": "Sequence",
+      "fieldtype": "Int",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "planned_time",
+      "label": "Planned Time",
+      "fieldtype": "Time"
+    },
+    {
+      "fieldname": "purpose",
+      "label": "Visit Purpose",
+      "fieldtype": "Select",
+      "options": "Sales\nCollection\nMerchandising\nRelationship\nService\nOther"
+    },
+    {
+      "fieldname": "status",
+      "label": "Visit Status",
+      "fieldtype": "Select",
+      "options": "Pending\nDone\nSkipped\nNot Done\nPostponed",
+      "default": "Pending",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "status_reason",
+      "label": "Status Reason",
+      "fieldtype": "Small Text"
+    },
+    {
+      "fieldname": "action_taken",
+      "label": "Action Taken",
+      "fieldtype": "Small Text"
+    },
+    {
+      "fieldname": "next_action",
+      "label": "Next Action",
+      "fieldtype": "Small Text"
+    },
+    {
+      "fieldname": "next_action_date",
+      "label": "Next Action Date",
+      "fieldtype": "Date"
+    },
+    {
+      "fieldname": "postponed_to",
+      "label": "Postponed To",
+      "fieldtype": "Date"
+    },
+    {
+      "fieldname": "visited_at",
+      "label": "Visit Completed At",
+      "fieldtype": "Datetime"
+    },
+    {
+      "fieldname": "latitude",
+      "label": "Observed Latitude",
+      "fieldtype": "Float",
+      "precision": "8"
+    },
+    {
+      "fieldname": "longitude",
+      "label": "Observed Longitude",
+      "fieldtype": "Float",
+      "precision": "8"
+    },
+    {
+      "fieldname": "accuracy",
+      "label": "GPS Accuracy (m)",
+      "fieldtype": "Float"
+    },
+    {
+      "fieldname": "field_visit",
+      "label": "Field Visit",
+      "fieldtype": "Link",
+      "options": "Field Visit",
+      "read_only": 1
+    }
+  ],
+  "permissions": []
+}

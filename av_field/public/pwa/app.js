@@ -1,9 +1,11 @@
 import {openStore} from './db.js';
+import {routeUI} from './routes.js';
 import {ApiError, drain, downloadReferences} from './sync.js';
 const $ = selector => document.querySelector(selector);
 const ownerKey = 'av-field:last-user';
 let store, user, csrf, busy = false, locationData = null, snapshot = {customers: [], items: []};
 let booting = false, locked = true;
+const routes = routeUI({getStore: () => store, notify: (...args) => tell(...args), sync: () => sync()});
 function tell(text, error = false) { $('#message').textContent = text; $('#message').classList.toggle('error', error); $('#message').hidden = false; }
 function lock(reason) { locked = true; csrf = null; $('#workspace').hidden = true; $('#locked').hidden = false; $('#lock-reason').textContent = reason; }
 function unlock() { locked = false; $('#workspace').hidden = false; $('#locked').hidden = true; }
@@ -23,6 +25,40 @@ async function api(method, args = {}, post = false) {
     throw new ApiError(message, response.status || 500);
   }
   return data.message;
+}
+async function routeApi(method, args = {}, post = false) {
+  const url = new URL('/api/method/av_field.routes.' + method, window.location.origin);
+  if (!post) Object.entries(args).forEach(([key, value]) => url.searchParams.set(key, value));
+  const response = await fetch(url, {
+    method: post ? 'POST' : 'GET', credentials: 'same-origin', cache: 'no-store',
+    signal: AbortSignal.timeout(30000),
+    headers: post ? {'Content-Type': 'application/json', 'X-Frappe-CSRF-Token': csrf} : {},
+    body: post ? JSON.stringify(args) : undefined
+  });
+  const data = await response.json();
+  if (!response.ok || data.exc || data.exc_type) {
+    let message = 'Route sync rejected (' + response.status + ')';
+    try { const messages = JSON.parse(data._server_messages || '[]');
+      if (messages.length) message = JSON.parse(messages[0]).message; } catch {}
+    throw new ApiError(message, response.status || 500);
+  }
+  return data.message;
+}
+async function fetchRouteOutcome(operation) {
+  return routeApi('record_outcome', {operation, expected_user: user}, true);
+}
+async function downloadPaged(fetchPage) {
+  let after = '';
+  const rows = [], seen = new Set();
+  do {
+    const page = await fetchPage(after);
+    if (!Array.isArray(page.rows)) throw new Error('Invalid route response');
+    rows.push(...page.rows); after = page.after || '';
+    if (after && seen.has(after)) throw new Error('Route paging did not advance');
+    if (after) seen.add(after);
+    if (seen.size > 1000) throw new Error('Route snapshot too large');
+  } while (after);
+  return rows;
 }
 async function verifySession() {
   const context = await api('context');
@@ -55,14 +91,14 @@ async function render() {
   if (!operations.length) { const p = document.createElement('p'); p.className = 'hint'; p.textContent = 'Your visits and order requests will appear here.'; list.append(p); }
   operations.sort((a,b) => b.recorded_at.localeCompare(a.recorded_at)).slice(0,100).forEach(op => {
     const entry = document.createElement('article'); entry.className = 'activity';
-    const title = document.createElement('strong'); title.textContent = `${op.kind === 'visit' ? 'Visit' : 'Order request'} · ${op.payload.customer}`;
+    const title = document.createElement('strong'); title.textContent = `${op.kind === 'visit' ? 'Visit' : op.kind === 'route_outcome' ? 'Route outcome' : 'Order request'} · ${op.payload.customer || op.payload.plan || ''}`;
     const status = document.createElement('span'); status.className = `status ${op.status}`; status.textContent = op.status;
     const detail = document.createElement('p'); detail.textContent = `${new Date(op.recorded_at).toLocaleString()}${op.kind === 'order' ? ` · ${op.payload.items.length} item(s)` : ''} · ${op.payload.notes || 'No notes'}`;
     entry.append(title, status, detail);
     if (op.error) { const error = document.createElement('p'); error.textContent = op.error; entry.append(error); }
     if (op.ack) {
       const link = document.createElement('a'); link.className = 'text-button'; link.textContent = 'Open in ERPNext';
-      link.href = `/app/${op.ack.doctype === 'Field Visit' ? 'field-visit' : 'field-order-request'}/${encodeURIComponent(op.ack.name)}`; link.target = '_blank'; link.rel = 'noopener'; entry.append(link);
+      link.href = `/app/${op.ack.doctype === 'Field Visit' ? 'field-visit' : op.ack.doctype === 'Field Route Visit Log' ? 'field-route-visit-log' : 'field-order-request'}/${encodeURIComponent(op.ack.name)}`; link.target = '_blank'; link.rel = 'noopener'; entry.append(link);
     } else {
       const retry = document.createElement('button'); retry.className = 'text-button'; retry.textContent = 'Retry sync'; retry.disabled = busy;
       retry.onclick = () => action(async () => { await store.save({...op, status: 'pending', nextAttemptAt: null}); await sync(); });
@@ -77,9 +113,17 @@ async function sync() {
   try {
     const work = async () => {
       await verifySession();
-      await drain(store, operation => api('push', {operation, expected_user: user}, true));
+      await drain(store, operation => operation.kind === 'route_outcome'
+        ? fetchRouteOutcome(operation) : api('push', {operation, expected_user: user}, true));
       const fresh = await downloadReferences((kind, after) => api('references', {kind, after, expected_user: user}));
       await store.replaceReferences(fresh); snapshot = fresh; renderMasters();
+      const [routePlans, outletList] = await Promise.all([
+        downloadPaged((after) => routeApi('my_routes', {after, expected_user: user})),
+        downloadPaged((after) => routeApi('my_outlets', {after, expected_user: user}))
+      ]);
+      await store.setMeta('routes', routePlans);
+      await store.setMeta('outlets', outletList);
+      await routes.load();
       const records = await store.list();
       const rejected = records.filter(op => op.status === 'rejected').length;
       const pending = records.filter(op => op.status === 'pending').length;
@@ -167,7 +211,7 @@ async function boot() {
     snapshot = await store.getMeta('references') || {customers: [], items: []};
     $('#identity').textContent = user; renderMasters(); if (!$('#order-lines').children.length) addLine(); await render(); unlock();
     if (navigator.storage?.persist) await navigator.storage.persist().catch(() => false);
-    if (csrf) void sync();
+    await routes.load(); if (csrf) void sync();
   } catch(error) { lock('Device storage is unavailable. Enable browser storage and try again.'); tell(error.message, true); }
   finally { booting = false; connection(); }
 }

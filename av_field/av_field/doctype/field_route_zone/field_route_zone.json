@@ -1,0 +1,64 @@
+{
+  "doctype": "DocType",
+  "name": "Field Route Zone",
+  "module": "AV Field",
+  "engine": "InnoDB",
+  "autoname": "hash",
+  "istable": 0,
+  "track_changes": 1,
+  "field_order": [
+    "zone_name",
+    "territory",
+    "manager",
+    "active",
+    "description"
+  ],
+  "fields": [
+    {
+      "fieldname": "zone_name",
+      "label": "Zone Name",
+      "fieldtype": "Data",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "territory",
+      "label": "ERPNext Territory",
+      "fieldtype": "Link",
+      "options": "Territory"
+    },
+    {
+      "fieldname": "manager",
+      "label": "Route Manager",
+      "fieldtype": "Link",
+      "options": "User"
+    },
+    {
+      "fieldname": "active",
+      "label": "Active",
+      "fieldtype": "Check",
+      "default": "1"
+    },
+    {
+      "fieldname": "description",
+      "label": "Description",
+      "fieldtype": "Small Text"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "Field Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ]
+}
