@@ -82,7 +82,8 @@
     },
     {
       "role": "Field Agent",
-      "read": 1
+      "read": 1,
+      "if_owner": 1
     }
   ]
 }
