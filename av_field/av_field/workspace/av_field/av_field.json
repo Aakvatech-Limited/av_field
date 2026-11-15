@@ -1,0 +1,117 @@
+{
+  "creation": "2026-11-16 00:00:00.000000",
+  "modified": "2026-11-16 00:00:00.000000",
+  "owner": "Administrator",
+  "modified_by": "Administrator",
+  "docstatus": 0,
+  "idx": 0,
+  "doctype": "Workspace",
+  "name": "AV Field",
+  "label": "AV Field",
+  "title": "AV Field",
+  "module": "AV Field",
+  "type": "Workspace",
+  "link_type": "DocType",
+  "icon": "map-pin",
+  "public": 1,
+  "standard": 1,
+  "is_hidden": 0,
+  "hide_custom": 0,
+  "sequence_id": 20,
+  "for_user": "",
+  "parent_page": "",
+  "indicator_color": "green",
+  "content": "[{\"id\":\"avfield0000\",\"type\":\"header\",\"data\":{\"text\":\"Field Operations\",\"col\":12}},{\"id\":\"avfield0001\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Field Visits Total\",\"col\":6}},{\"id\":\"avfield0002\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Field Order Requests Total\",\"col\":6}},{\"id\":\"avfield0003\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Field Visits Trend\",\"col\":6}},{\"id\":\"avfield0004\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Field Order Requests Trend\",\"col\":6}},{\"id\":\"avfield0005\",\"type\":\"card\",\"data\":{\"card_name\":\"Field Records\",\"col\":6}},{\"id\":\"avfield0006\",\"type\":\"card\",\"data\":{\"card_name\":\"ERPNext References\",\"col\":6}}]",
+  "links": [
+    {
+      "type": "Card Break",
+      "label": "Field Records",
+      "link_count": 2,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Link",
+      "label": "Field Visits",
+      "link_to": "Field Visit",
+      "link_type": "DocType",
+      "link_count": 0,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Link",
+      "label": "Field Order Requests",
+      "link_to": "Field Order Request",
+      "link_type": "DocType",
+      "link_count": 0,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Card Break",
+      "label": "ERPNext References",
+      "link_count": 3,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Link",
+      "label": "Customers",
+      "link_to": "Customer",
+      "link_type": "DocType",
+      "link_count": 0,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Link",
+      "label": "Items",
+      "link_to": "Item",
+      "link_type": "DocType",
+      "link_count": 0,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Link",
+      "label": "Sales Orders",
+      "link_to": "Sales Order",
+      "link_type": "DocType",
+      "link_count": 0,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    }
+  ],
+  "charts": [
+    {
+      "chart_name": "Field Visits Trend",
+      "label": "Field Visits Trend"
+    },
+    {
+      "chart_name": "Field Order Requests Trend",
+      "label": "Field Order Requests Trend"
+    }
+  ],
+  "number_cards": [
+    {
+      "number_card_name": "Field Visits Total",
+      "label": "Field Visits Total"
+    },
+    {
+      "number_card_name": "Field Order Requests Total",
+      "label": "Field Order Requests Total"
+    }
+  ],
+  "custom_blocks": [],
+  "quick_lists": [],
+  "shortcuts": [],
+  "roles": []
+}

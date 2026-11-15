@@ -1,0 +1,23 @@
+{
+  "creation": "2026-11-16 00:00:00.000000",
+  "modified": "2026-11-16 00:00:00.000000",
+  "owner": "Administrator",
+  "modified_by": "Administrator",
+  "docstatus": 0,
+  "idx": 0,
+  "doctype": "Dock",
+  "name": "av_field",
+  "app": "av_field",
+  "standard": 1,
+  "user": "",
+  "items": [
+    {
+      "added": 0,
+      "hidden": 0,
+      "icon": "map-pin-soft",
+      "link_to": "AV Field",
+      "link_type": "Sidebar",
+      "title": "AV Field"
+    }
+  ]
+}
