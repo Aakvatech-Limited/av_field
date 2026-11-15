@@ -65,6 +65,16 @@ def generate_route(call_cycle, route_date, publish=0):
         outlet = frappe.get_doc("Field Customer Outlet", item.outlet)
         if not outlet.active:
             frappe.throw("Inactive outlet: " + outlet.name)
+        if outlet.salesperson != template.salesperson:
+            frappe.throw("Outlet " + outlet.name + " must be assigned to the call cycle salesperson")
+        history = frappe.get_all(
+            "Field Route Visit Log",
+            filters={"outlet": outlet.name, "outcome": "Done"},
+            fields=["recorded_at"], order_by="recorded_at desc", limit_page_length=1,
+        )
+        frequency = max(int(outlet.visit_frequency_days or 0), 0)
+        if history and frequency and (day - getdate(history[0].recorded_at)).days < frequency:
+            continue
         values.append({
             "outlet": outlet.name,
             "customer": outlet.customer,
@@ -73,6 +83,8 @@ def generate_route(call_cycle, route_date, publish=0):
             "purpose": item.purpose,
             "status": "Pending",
         })
+    if not values:
+        frappe.throw("No outlets are due for visits on this date")
     doc = frappe.get_doc({
         "doctype": "Field Route Plan",
         "route_date": day,
