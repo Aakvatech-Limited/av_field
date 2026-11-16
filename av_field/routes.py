@@ -58,33 +58,48 @@ def generate_route(call_cycle, route_date, publish=0):
     )
     if not stops:
         frappe.throw("The call cycle has no stops on " + _day(day))
+    from av_field.route_optimizer import _sales_address, _due
+    from av_field.route_geo import RoutingError
     values = []
     seen = set()
     for item in stops:
-        if item.outlet in seen:
-            frappe.throw("The call cycle includes the same outlet twice on this day")
-        seen.add(item.outlet)
-        outlet = frappe.get_doc("Field Customer Outlet", item.outlet)
-        if not outlet.active:
-            frappe.throw("Inactive outlet: " + outlet.name)
-        if outlet.salesperson != template.salesperson:
-            frappe.throw("Outlet " + outlet.name + " must be assigned to the call cycle salesperson")
-        history = frappe.get_all(
-            "Field Route Visit Log",
-            filters={"outlet": outlet.name, "outcome": "Done"},
-            fields=["recorded_at"], order_by="recorded_at desc", limit_page_length=1,
-        )
-        frequency = max(int(outlet.visit_frequency_days or 0), 0)
-        if history and frequency and (day - getdate(history[0].recorded_at)).days < frequency:
-            continue
-        values.append({
-            "outlet": outlet.name,
-            "customer": outlet.customer,
-            "sequence": item.sequence,
-            "planned_time": item.planned_time,
-            "purpose": item.purpose,
-            "status": "Pending",
-        })
+        site_key = item.address or item.outlet
+        if site_key in seen:
+            frappe.throw("A visit location appears twice in the call cycle")
+        seen.add(site_key)
+        if item.address:
+            if not item.customer:
+                frappe.throw("Call Cycle Address stops require a Customer")
+            try:
+                customer, address, location = _sales_address(
+                    item.customer, item.address, template.salesperson)
+            except RoutingError as exc:
+                frappe.throw(str(exc))
+            if not _due(customer.name, address.name, day,
+                        max(0, int(customer.get("field_visit_frequency_days") or 0))):
+                continue
+            values.append({
+                "address": address.name, "customer": customer.name,
+                "sequence": item.sequence, "planned_time": item.planned_time,
+                "purpose": item.purpose, "status": "Pending",
+            })
+        else:
+            # Existing deployed call cycles continue to work until migrated manually.
+            outlet = frappe.get_doc("Field Customer Outlet", item.outlet)
+            if not outlet.active or outlet.salesperson != template.salesperson:
+                frappe.throw("Inactive or wrongly assigned legacy outlet")
+            history = frappe.get_all(
+                "Field Route Visit Log",
+                filters={"outlet": outlet.name, "outcome": "Done"},
+                fields=["recorded_at"], order_by="recorded_at desc", limit_page_length=1)
+            frequency = max(0, int(outlet.visit_frequency_days or 0))
+            if history and frequency and (day - getdate(history[0].recorded_at)).days < frequency:
+                continue
+            values.append({
+                "outlet": outlet.name, "customer": outlet.customer,
+                "sequence": item.sequence, "planned_time": item.planned_time,
+                "purpose": item.purpose, "status": "Pending",
+            })
     if not values:
         frappe.throw("No outlets are due for visits on this date")
     doc = frappe.get_doc({
@@ -127,7 +142,7 @@ def my_routes(expected_user, after=""):
             "zone": plan.zone,
             "status": plan.status,
             "stops": [{
-                "name": s.name, "outlet": s.outlet, "customer": s.customer,
+                "name": s.name, "outlet": s.outlet, "address": s.address, "customer": s.customer,
                 "sequence": s.sequence, "planned_time": str(s.planned_time or ""),
                 "purpose": s.purpose, "status": s.status,
                 "status_reason": s.status_reason,
@@ -142,21 +157,48 @@ def my_routes(expected_user, after=""):
 
 @frappe.whitelist(methods=["GET"])
 def my_outlets(expected_user, after=""):
-    """Only outlets assigned to the agent, excluding unrelated customers."""
+    """Return only eligible Address points for customers assigned to this User.
+
+    Retain legacy outlets in the offline snapshot for pre-migration route plans.
+    """
+    from av_field.route_geo import RoutingError, point_from_geojson
     require_agent()
     if expected_user != frappe.session.user:
         frappe.throw("Signed-in account changed", frappe.PermissionError)
-    filters = {"salesperson": frappe.session.user, "active": 1}
-    if after:
-        filters["name"] = [">", after]
-    rows = frappe.get_list(
-        "Field Customer Outlet", filters=filters,
-        fields=["name", "customer", "outlet_name", "latitude", "longitude",
-                "visit_instructions", "address"],
-        order_by="name asc", limit_page_length=201,
-    )
-    more = len(rows) > 200
-    return {"rows": rows[:200], "after": rows[199].name if more else None}
+    if not isinstance(after, str) or len(after) > 140:
+        frappe.throw("Invalid cursor")
+    customers = frappe.get_all("Customer",
+        filters={"field_sales_user": frappe.session.user, "disabled": 0}, pluck="name")
+    points = {}
+    for customer in customers:
+        addresses = frappe.get_all("Dynamic Link",
+            filters={"parenttype": "Address", "link_doctype": "Customer", "link_name": customer},
+            pluck="parent")
+        for name in addresses:
+            if name in points:
+                continue
+            address = frappe.get_doc("Address", name)
+            if not address.get("field_visit_enabled"):
+                continue
+            try:
+                lon, lat = point_from_geojson(address.get("field_geojson"))
+            except RoutingError:
+                continue
+            points[name] = {
+                "name": name, "outlet_name": address.address_title or name,
+                "latitude": lat, "longitude": lon,
+                "visit_instructions": address.get("field_visit_instructions") or "",
+                "customer": customer, "address": name,
+            }
+    legacy = frappe.get_all("Field Customer Outlet",
+        filters={"salesperson": frappe.session.user, "active": 1},
+        fields=["name", "outlet_name", "latitude", "longitude", "visit_instructions", "customer", "address"])
+    for item in legacy:
+        if item.name not in points:
+            points[item.name] = dict(item)
+    names = [n for n in sorted(points) if n > after]
+    page = names[:200]
+    return {"rows": [points[n] for n in page], "after": page[-1] if len(names) > 200 else None}
 
 
 @frappe.whitelist(methods=["POST"])
@@ -228,7 +270,7 @@ def record_outcome(operation, expected_user):
         frappe.throw("This stop is already resolved. Ask your manager to reopen it.")
     log = frappe.get_doc({
         "doctype": "Field Route Visit Log", "route_plan": plan.name,
-        "stop_id": stop.name, "outlet": stop.outlet,
+        "stop_id": stop.name, "outlet": stop.outlet,\n        "customer": stop.customer, "address": stop.address,
         "salesperson": frappe.session.user, "outcome": outcome,
         "reason": reason, "action_taken": action, "next_action": next_action,
         "next_action_date": next_date, "postponed_to": postponed,
