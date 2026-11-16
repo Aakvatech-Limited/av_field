@@ -8,7 +8,7 @@ const make = (tag, text, cls) => {
 const format = (s) => s ? String(s).slice(0, 10) : '';
 const statusChoices = ['Done', 'Skipped', 'Not Done', 'Postponed'];
 
-export function routeUI({getStore, notify, sync}) {
+export function routeUI({getStore, notify, sync, onSaved}) {
   const root = document.querySelector('#route-list');
   let routes = [], outlets = [];
   async function load() {
@@ -142,6 +142,7 @@ export function routeUI({getStore, notify, sync}) {
         };
         await getStore().save(operation);
         notify('Route outcome saved on this device. It will sync when connected.');
+        if (onSaved) await onSaved();
         await render();
         if (navigator.onLine) void sync();
       } catch (error) { submit.disabled = false; notify(error.message, true); }
