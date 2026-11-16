@@ -17,6 +17,18 @@
     },
     {
       "card": "Field Order Requests Total"
+    },
+    {
+      "card": "Field Routes Total"
+    },
+    {
+      "card": "Field Published Routes"
+    },
+    {
+      "card": "Field Route Outcomes Total"
+    },
+    {
+      "card": "Field Postponed Visits"
     }
   ],
   "charts": [
@@ -26,6 +38,14 @@
     },
     {
       "chart": "Field Order Requests Trend",
+      "width": "Full"
+    },
+    {
+      "chart": "Field Route Plans Trend",
+      "width": "Full"
+    },
+    {
+      "chart": "Field Route Outcomes Trend",
       "width": "Full"
     }
   ]
