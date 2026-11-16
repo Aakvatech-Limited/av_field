@@ -11,15 +11,17 @@
     "sequence",
     "day_of_week",
     "planned_time",
-    "purpose"
+    "purpose",
+    "customer",
+    "address"
   ],
   "fields": [
     {
       "fieldname": "outlet",
-      "label": "Outlet",
+      "label": "Legacy Outlet",
       "fieldtype": "Link",
       "options": "Field Customer Outlet",
-      "reqd": 1,
+      "reqd": 0,
       "in_list_view": 1
     },
     {
@@ -47,6 +49,18 @@
       "fieldtype": "Select",
       "options": "Sales\nCollection\nMerchandising\nRelationship\nService\nOther",
       "default": "Sales"
+    },
+    {
+      "fieldname": "customer",
+      "label": "Customer",
+      "fieldtype": "Link",
+      "options": "Customer"
+    },
+    {
+      "fieldname": "address",
+      "label": "Visit Address",
+      "fieldtype": "Link",
+      "options": "Address"
     }
   ],
   "permissions": []
