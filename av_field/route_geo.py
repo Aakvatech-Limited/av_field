@@ -54,7 +54,9 @@ def optimized_jobs(result, expected_ids):
     actions = props.get("actions") or []
     seen = []
     for action in actions:
-        if action.get("type") != "job":
+        # Job-bearing actions are identified by their job reference; provider
+        # releases may use different action type labels for a service visit.
+        if action.get("job_id") is None and action.get("job_index") is None:
             continue
         job_id = action.get("job_id")
         if job_id is None and isinstance(action.get("job_index"), int):
