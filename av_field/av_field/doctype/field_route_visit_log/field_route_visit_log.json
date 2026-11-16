@@ -23,7 +23,9 @@
     "accuracy",
     "operation_id",
     "field_visit",
-    "payload_hash"
+    "payload_hash",
+    "customer",
+    "address"
   ],
   "fields": [
     {
@@ -42,10 +44,10 @@
     },
     {
       "fieldname": "outlet",
-      "label": "Outlet",
+      "label": "Legacy Outlet",
       "fieldtype": "Link",
       "options": "Field Customer Outlet",
-      "reqd": 1
+      "reqd": 0
     },
     {
       "fieldname": "salesperson",
@@ -129,6 +131,18 @@
       "fieldtype": "Data",
       "hidden": 1,
       "read_only": 1
+    },
+    {
+      "fieldname": "customer",
+      "label": "Customer",
+      "fieldtype": "Link",
+      "options": "Customer"
+    },
+    {
+      "fieldname": "address",
+      "label": "Visit Address",
+      "fieldtype": "Link",
+      "options": "Address"
     }
   ],
   "permissions": [

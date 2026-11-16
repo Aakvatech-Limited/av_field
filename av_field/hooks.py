@@ -6,6 +6,7 @@ app_email = "info@aakvatech.com"
 app_license = "AGPL-3.0-only"
 required_apps = ["erpnext"]
 after_install = "av_field.install.after_install"
+after_migrate = "av_field.route_setup.ensure_route_fields"
 
 app_logo_url = "/assets/av_field/pwa/icon-192.png"
 app_home = "/desk/av-field"

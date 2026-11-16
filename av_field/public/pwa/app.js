@@ -5,7 +5,7 @@ const $ = selector => document.querySelector(selector);
 const ownerKey = 'av-field:last-user';
 let store, user, csrf, busy = false, locationData = null, snapshot = {customers: [], items: []};
 let booting = false, locked = true;
-const routes = routeUI({getStore: () => store, notify: (...args) => tell(...args), sync: () => sync()});
+const routes = routeUI({getStore: () => store, notify: (...args) => tell(...args), sync: () => sync(), onSaved: () => render()});
 function tell(text, error = false) { $('#message').textContent = text; $('#message').classList.toggle('error', error); $('#message').hidden = false; }
 function lock(reason) { locked = true; csrf = null; $('#workspace').hidden = true; $('#locked').hidden = false; $('#lock-reason').textContent = reason; }
 function unlock() { locked = false; $('#workspace').hidden = false; $('#locked').hidden = true; }

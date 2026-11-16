@@ -1,0 +1,88 @@
+{
+  "doctype": "DocType",
+  "name": "Field Route Optimization Settings",
+  "module": "AV Field",
+  "issingle": 1,
+  "track_changes": 1,
+  "field_order": [
+    "api_key",
+    "enabled",
+    "start_address",
+    "working_start",
+    "working_end",
+    "traffic_model",
+    "max_stops",
+    "daily_credit_budget",
+    "request_timeout_seconds"
+  ],
+  "fields": [
+    {
+      "fieldname": "api_key",
+      "label": "Geoapify API Key",
+      "fieldtype": "Password",
+      "reqd": 1
+    },
+    {
+      "fieldname": "enabled",
+      "label": "Enable Geoapify Optimization",
+      "fieldtype": "Check",
+      "default": "0"
+    },
+    {
+      "fieldname": "start_address",
+      "label": "Sales Route Starting Address",
+      "fieldtype": "Link",
+      "options": "Address",
+      "reqd": 1
+    },
+    {
+      "fieldname": "working_start",
+      "label": "Workday Start",
+      "fieldtype": "Time",
+      "default": "08:00:00"
+    },
+    {
+      "fieldname": "working_end",
+      "label": "Workday End",
+      "fieldtype": "Time",
+      "default": "17:00:00"
+    },
+    {
+      "fieldname": "traffic_model",
+      "label": "Traffic Model",
+      "fieldtype": "Select",
+      "options": "free_flow\napproximated",
+      "default": "approximated"
+    },
+    {
+      "fieldname": "max_stops",
+      "label": "Maximum Stops Per Route",
+      "fieldtype": "Int",
+      "default": "20"
+    },
+    {
+      "fieldname": "daily_credit_budget",
+      "label": "Daily Credit Budget (Baseline)",
+      "fieldtype": "Int",
+      "default": "2500"
+    },
+    {
+      "fieldname": "request_timeout_seconds",
+      "label": "Request Timeout (Seconds)",
+      "fieldtype": "Int",
+      "default": "25"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "Field Manager",
+      "read": 1,
+      "write": 1
+    },
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1
+    }
+  ]
+}

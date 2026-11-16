@@ -2,7 +2,7 @@
 
 AV Field is an installable offline PWA for ERPNext field teams. Agents record customer visits and order requests on their device, then sync when a connection returns. Managers review requests in Frappe and create draft Sales Orders using ERPNext's current pricing and validation.
 
-**Initial MVP — version 16.0.1, branch `version-16-hotfix`.** Requires Frappe and ERPNext 16. This is an independent app; it does not depend on `av_track`.
+**Current MVP — version 16.0.4, branch `version-16-hotfix`.** Requires Frappe and ERPNext 16. This is an independent app; it does not depend on `av_track`.
 
 ## What is included
 
@@ -78,7 +78,7 @@ Captured records are append-only. Correct captured facts with a new request; do 
 
 ## Scope remaining
 
-Planned modules: automatic road-network route optimization, check-in/out duration, merchandising surveys/photos, collection receipts and payment reconciliation, van stock/deliveries, cached customer-specific indicative prices, manager dashboards, and an optional native wrapper if background location becomes mandatory. These require their own permissions, offline conflict rules, and acceptance tests.
+Planned modules: traffic-aware route reprioritization, check-in/out duration, merchandising surveys/photos, collection receipts and payment reconciliation, van stock/deliveries, cached customer-specific indicative prices, manager dashboards, and an optional native wrapper if background location becomes mandatory. These require their own permissions, offline conflict rules, and acceptance tests.
 
 ## Development and validation
 

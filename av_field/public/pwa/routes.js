@@ -8,7 +8,7 @@ const make = (tag, text, cls) => {
 const format = (s) => s ? String(s).slice(0, 10) : '';
 const statusChoices = ['Done', 'Skipped', 'Not Done', 'Postponed'];
 
-export function routeUI({getStore, notify, sync}) {
+export function routeUI({getStore, notify, sync, onSaved}) {
   const root = document.querySelector('#route-list');
   let routes = [], outlets = [];
   async function load() {
@@ -36,7 +36,7 @@ export function routeUI({getStore, notify, sync}) {
       section.append(make('h3', 'Route · ' + plan.route_date));
       if (plan.zone) section.append(make('p', 'Zone: ' + plan.zone, 'hint'));
       const stops = plan.stops.slice().sort((a,b) => a.sequence - b.sequence);
-      const locations = stops.map(stop => localOutlet.get(stop.outlet))
+      const locations = stops.map(stop => localOutlet.get((stop.address || stop.outlet)))
         .filter(outlet => outlet && Number.isFinite(Number(outlet.latitude)) &&
           Number.isFinite(Number(outlet.longitude)) && outlet.latitude != null && outlet.longitude != null);
       if (locations.length >= 2) {
@@ -57,11 +57,11 @@ export function routeUI({getStore, notify, sync}) {
       }
 
       for (const stop of stops) {
-        const outlet = localOutlet.get(stop.outlet) || {};
+        const outlet = localOutlet.get((stop.address || stop.outlet)) || {};
         const stagedEvent = staged.get(stop.name);
         const status = stagedEvent?.payload.outcome || stop.status || 'Pending';
         const article = make('article', undefined, 'activity route-stop');
-        article.append(make('strong', stop.sequence + '. ' + (outlet.outlet_name || stop.outlet)));
+        article.append(make('strong', stop.sequence + '. ' + (outlet.outlet_name || (stop.address || stop.outlet))));
         article.append(make('span', status + (stagedEvent?.status === 'pending' ? ' · awaiting sync' : ''), 'status'));
         article.append(make('p', [stop.customer, stop.planned_time, stop.purpose].filter(Boolean).join(' · ')));
         if (outlet.visit_instructions) article.append(make('p', outlet.visit_instructions, 'hint'));
@@ -142,6 +142,7 @@ export function routeUI({getStore, notify, sync}) {
         };
         await getStore().save(operation);
         notify('Route outcome saved on this device. It will sync when connected.');
+        if (onSaved) await onSaved();
         await render();
         if (navigator.onLine) void sync();
       } catch (error) { submit.disabled = false; notify(error.message, true); }
