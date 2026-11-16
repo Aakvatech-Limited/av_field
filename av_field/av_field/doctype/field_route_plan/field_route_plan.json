@@ -13,7 +13,12 @@
     "call_cycle",
     "status",
     "manager_notes",
-    "stops"
+    "stops",
+    "optimization_provider",
+    "estimated_distance_m",
+    "estimated_travel_seconds",
+    "estimated_credits",
+    "start_address"
   ],
   "fields": [
     {
@@ -63,6 +68,37 @@
       "fieldtype": "Table",
       "options": "Field Route Stop",
       "reqd": 1
+    },
+    {
+      "fieldname": "optimization_provider",
+      "label": "Route Optimization",
+      "fieldtype": "Select",
+      "options": "Manual\nGeoapify",
+      "default": "Manual"
+    },
+    {
+      "fieldname": "estimated_distance_m",
+      "label": "Estimated Total Distance (m)",
+      "fieldtype": "Float",
+      "read_only": 1
+    },
+    {
+      "fieldname": "estimated_travel_seconds",
+      "label": "Estimated Driving Time (seconds)",
+      "fieldtype": "Float",
+      "read_only": 1
+    },
+    {
+      "fieldname": "estimated_credits",
+      "label": "Estimated Geoapify Credits",
+      "fieldtype": "Int",
+      "read_only": 1
+    },
+    {
+      "fieldname": "start_address",
+      "label": "Route Starting Address",
+      "fieldtype": "Link",
+      "options": "Address"
     }
   ],
   "permissions": [
