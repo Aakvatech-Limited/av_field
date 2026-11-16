@@ -21,7 +21,7 @@
   "for_user": "",
   "parent_page": "",
   "indicator_color": "green",
-  "content": "[{\"id\":\"avfield0000\",\"type\":\"header\",\"data\":{\"text\":\"Field Operations\",\"col\":12}},{\"id\":\"avfield0001\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Field Visits Total\",\"col\":6}},{\"id\":\"avfield0002\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Field Order Requests Total\",\"col\":6}},{\"id\":\"avfield0003\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Field Visits Trend\",\"col\":6}},{\"id\":\"avfield0004\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Field Order Requests Trend\",\"col\":6}},{\"id\":\"avfield0005\",\"type\":\"card\",\"data\":{\"card_name\":\"Field Records\",\"col\":6}},{\"id\":\"avfield0006\",\"type\":\"card\",\"data\":{\"card_name\":\"ERPNext References\",\"col\":6}}]",
+  "content": "[{\"id\":\"avfield0000\",\"type\":\"header\",\"data\":{\"text\":\"Field Operations\",\"col\":12}},{\"id\":\"avfield0001\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Field Visits Total\",\"col\":6}},{\"id\":\"avfield0002\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Field Order Requests Total\",\"col\":6}},{\"id\":\"avfield0003\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Field Visits Trend\",\"col\":6}},{\"id\":\"avfield0004\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Field Order Requests Trend\",\"col\":6}},{\"id\":\"avfield0005\",\"type\":\"card\",\"data\":{\"card_name\":\"Field Records\",\"col\":6}},{\"id\":\"avfield0006\",\"type\":\"card\",\"data\":{\"card_name\":\"ERPNext References\",\"col\":6}},{\"id\":\"avfield0007\",\"type\":\"header\",\"data\":{\"text\":\"Sales Route Planning & Outcomes\",\"col\":12}},{\"id\":\"avfield0008\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Field Routes Total\",\"col\":3}},{\"id\":\"avfield0009\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Field Published Routes\",\"col\":3}},{\"id\":\"avfield0010\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Field Route Outcomes Total\",\"col\":3}},{\"id\":\"avfield0011\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Field Postponed Visits\",\"col\":3}},{\"id\":\"avfield0012\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Field Route Plans Trend\",\"col\":6}},{\"id\":\"avfield0013\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Field Route Outcomes Trend\",\"col\":6}},{\"id\":\"avfield0014\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales Route Operations\",\"col\":6}},{\"id\":\"avfield0015\",\"type\":\"card\",\"data\":{\"card_name\":\"Route & Customer Setup\",\"col\":6}},{\"id\":\"avfield0016\",\"type\":\"card\",\"data\":{\"card_name\":\"Manager Settings & Dashboard\",\"col\":6}}]",
   "links": [
     {
       "type": "Card Break",
@@ -88,6 +88,110 @@
       "hidden": 0,
       "is_query_report": 0,
       "onboard": 0
+    },
+    {
+      "type": "Card Break",
+      "label": "Sales Route Operations",
+      "link_count": 3,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Link",
+      "label": "Daily Route Plans",
+      "link_to": "Field Route Plan",
+      "link_type": "DocType",
+      "link_count": 0,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Link",
+      "label": "Recurring Call Cycles",
+      "link_to": "Field Call Cycle",
+      "link_type": "DocType",
+      "link_count": 0,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Link",
+      "label": "Visit Outcomes",
+      "link_to": "Field Route Visit Log",
+      "link_type": "DocType",
+      "link_count": 0,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Card Break",
+      "label": "Route & Customer Setup",
+      "link_count": 3,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Link",
+      "label": "Route Zones",
+      "link_to": "Field Route Zone",
+      "link_type": "DocType",
+      "link_count": 0,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Link",
+      "label": "Customers & Assigned Salespeople",
+      "link_to": "Customer",
+      "link_type": "DocType",
+      "link_count": 0,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Link",
+      "label": "Customer Visit Addresses",
+      "link_to": "Address",
+      "link_type": "DocType",
+      "link_count": 0,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Card Break",
+      "label": "Manager Settings & Dashboard",
+      "link_count": 2,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Link",
+      "label": "Geoapify Optimization Settings",
+      "link_to": "Field Route Optimization Settings",
+      "link_type": "DocType",
+      "link_count": 0,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
+    },
+    {
+      "type": "Link",
+      "label": "AV Field Operations Dashboard",
+      "link_to": "AV Field Operations",
+      "link_type": "Dashboard",
+      "link_count": 0,
+      "hidden": 0,
+      "is_query_report": 0,
+      "onboard": 0
     }
   ],
   "charts": [
@@ -98,6 +202,14 @@
     {
       "chart_name": "Field Order Requests Trend",
       "label": "Field Order Requests Trend"
+    },
+    {
+      "chart_name": "Field Route Plans Trend",
+      "label": "Field Route Plans Trend"
+    },
+    {
+      "chart_name": "Field Route Outcomes Trend",
+      "label": "Field Route Outcomes Trend"
     }
   ],
   "number_cards": [
@@ -108,6 +220,22 @@
     {
       "number_card_name": "Field Order Requests Total",
       "label": "Field Order Requests Total"
+    },
+    {
+      "number_card_name": "Field Routes Total",
+      "label": "Field Routes Total"
+    },
+    {
+      "number_card_name": "Field Published Routes",
+      "label": "Field Published Routes"
+    },
+    {
+      "number_card_name": "Field Route Outcomes Total",
+      "label": "Field Route Outcomes Total"
+    },
+    {
+      "number_card_name": "Field Postponed Visits",
+      "label": "Field Postponed Visits"
     }
   ],
   "custom_blocks": [],
