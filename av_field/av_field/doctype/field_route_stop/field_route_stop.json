@@ -22,15 +22,18 @@
     "latitude",
     "longitude",
     "accuracy",
-    "field_visit"
+    "field_visit",
+    "address",
+    "estimated_arrival",
+    "estimated_distance_m"
   ],
   "fields": [
     {
       "fieldname": "outlet",
-      "label": "Outlet",
+      "label": "Legacy Outlet",
       "fieldtype": "Link",
       "options": "Field Customer Outlet",
-      "reqd": 1,
+      "reqd": 0,
       "in_list_view": 1
     },
     {
@@ -38,7 +41,7 @@
       "label": "Customer",
       "fieldtype": "Link",
       "options": "Customer",
-      "read_only": 1
+      "read_only": 0
     },
     {
       "fieldname": "sequence",
@@ -119,6 +122,22 @@
       "fieldtype": "Link",
       "options": "Field Visit",
       "read_only": 1
+    },
+    {
+      "fieldname": "address",
+      "label": "Visit Address",
+      "fieldtype": "Link",
+      "options": "Address"
+    },
+    {
+      "fieldname": "estimated_arrival",
+      "label": "Estimated Arrival",
+      "fieldtype": "Time"
+    },
+    {
+      "fieldname": "estimated_distance_m",
+      "label": "Estimated Road Distance (m)",
+      "fieldtype": "Float"
     }
   ],
   "permissions": []
