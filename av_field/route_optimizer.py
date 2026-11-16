@@ -1,8 +1,4 @@
 """Geoapify-based route generation from ERPNext Customers and linked Addresses."""
-import hashlib
-import json
-from datetime import datetime
-
 import frappe
 import requests
 from frappe.utils import getdate, nowdate
@@ -74,7 +70,7 @@ def _eligible_jobs(salesperson, day, selected=None):
             if not address.get("field_visit_enabled"):
                 continue
             customer, address, location = _sales_address(c.name, address_name, salesperson)
-            if not _due(c.name, address_name, day, max(0, int(c.field_visit_frequency_days or 0))):
+            if not _due(c.name, address_name, day, max(0, int(c.field_visit_frequency_days if c.field_visit_frequency_days is not None else 7))):
                 continue
             job = {"id": f"job-{len(jobs)}", "location": location,
                    "duration": max(1, int(address.get("field_visit_minutes") or 20)) * 60,
