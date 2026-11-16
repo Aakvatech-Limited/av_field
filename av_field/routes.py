@@ -270,7 +270,8 @@ def record_outcome(operation, expected_user):
         frappe.throw("This stop is already resolved. Ask your manager to reopen it.")
     log = frappe.get_doc({
         "doctype": "Field Route Visit Log", "route_plan": plan.name,
-        "stop_id": stop.name, "outlet": stop.outlet,\n        "customer": stop.customer, "address": stop.address,
+        "stop_id": stop.name, "outlet": stop.outlet,
+        "customer": stop.customer, "address": stop.address,
         "salesperson": frappe.session.user, "outcome": outcome,
         "reason": reason, "action_taken": action, "next_action": next_action,
         "next_action_date": next_date, "postponed_to": postponed,
