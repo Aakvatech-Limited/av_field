@@ -125,7 +125,7 @@ try {
   assert.equal(await page.locator('#visits-count').textContent(), '1');
   expired = true; await page.locator('nav button[data-view=sync]').click(); await page.locator('#sync-now').click();
   await page.waitForFunction(() => !document.querySelector('#locked').hidden);
-  assert.equal(acknowledgements.size,2); assert.deepEqual(errors,[]);
+  assert.equal(acknowledgements.size,3); assert.deepEqual(errors,[]);
   if (process.env.SCREENSHOT_DIR) {
     expired = false; await page.setViewportSize({width:1440,height:1000}); await page.reload();
     await page.waitForFunction(() => document.querySelector('#workspace').hidden === false && !document.querySelector('#sync-now').disabled);
